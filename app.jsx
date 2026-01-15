@@ -5,12 +5,14 @@ import { Player } from "@websim/remotion/player";
 import { OfflineReplay } from "./replayComposition.jsx";
 import { ACTIONS, calculateOfflineProgress, INITIAL_STATE } from "./gameLogic.js";
 import { motion, AnimatePresence } from "framer-motion";
+import { Character } from "./Character.jsx";
 const ROOM = new WebsimSocket();
 function App() {
   const [user, setUser] = useState(null);
   const [record, setRecord] = useState(null);
   const [simulation, setSimulation] = useState(null);
   const [showReplay, setShowReplay] = useState(false);
+  const [showActions, setShowActions] = useState(false);
   const [loading, setLoading] = useState(true);
   const [posting, setPosting] = useState(false);
   const sfxCollect = useRef(null);
@@ -63,6 +65,7 @@ function App() {
     });
     setRecord(updated);
     setPosting(false);
+    setShowActions(false);
   };
   const playSound = (type) => {
     const audio = new Audio(type === "collect" ? "sfx_collect.mp3" : "sfx_levelup.mp3");
@@ -76,13 +79,13 @@ function App() {
   };
   if (loading) return /* @__PURE__ */ jsxDEV("div", { className: "loading", children: "Waking up from cryosleep..." }, void 0, false, {
     fileName: "<stdin>",
-    lineNumber: 101,
+    lineNumber: 104,
     columnNumber: 23
   }, this);
   return /* @__PURE__ */ jsxDEV("div", { className: "game-container", children: [
     /* @__PURE__ */ jsxDEV("div", { className: "bg-layer", style: { backgroundImage: "url(space_bg.png)" } }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 106,
+      lineNumber: 109,
       columnNumber: 7
     }, this),
     /* @__PURE__ */ jsxDEV("div", { className: "ui-layer", children: [
@@ -90,13 +93,13 @@ function App() {
         /* @__PURE__ */ jsxDEV("div", { className: "user-badge", children: [
           /* @__PURE__ */ jsxDEV("img", { src: user?.avatar_url, className: "avatar" }, void 0, false, {
             fileName: "<stdin>",
-            lineNumber: 112,
+            lineNumber: 115,
             columnNumber: 13
           }, this),
           /* @__PURE__ */ jsxDEV("div", { className: "info", children: [
             /* @__PURE__ */ jsxDEV("div", { className: "username", children: user?.username }, void 0, false, {
               fileName: "<stdin>",
-              lineNumber: 114,
+              lineNumber: 117,
               columnNumber: 15
             }, this),
             /* @__PURE__ */ jsxDEV("div", { className: "level", children: [
@@ -104,24 +107,24 @@ function App() {
               Math.floor((record?.xp || 0) / 1e3) + 1
             ] }, void 0, true, {
               fileName: "<stdin>",
-              lineNumber: 115,
+              lineNumber: 118,
               columnNumber: 15
             }, this)
           ] }, void 0, true, {
             fileName: "<stdin>",
-            lineNumber: 113,
+            lineNumber: 116,
             columnNumber: 13
           }, this)
         ] }, void 0, true, {
           fileName: "<stdin>",
-          lineNumber: 111,
+          lineNumber: 114,
           columnNumber: 11
         }, this),
         /* @__PURE__ */ jsxDEV("div", { className: "resources", children: [
           /* @__PURE__ */ jsxDEV("div", { className: "res", children: [
             /* @__PURE__ */ jsxDEV("img", { src: "icon_energy.png" }, void 0, false, {
               fileName: "<stdin>",
-              lineNumber: 121,
+              lineNumber: 124,
               columnNumber: 15
             }, this),
             /* @__PURE__ */ jsxDEV("span", { children: [
@@ -129,112 +132,173 @@ function App() {
               "h"
             ] }, void 0, true, {
               fileName: "<stdin>",
-              lineNumber: 122,
+              lineNumber: 125,
               columnNumber: 15
             }, this)
           ] }, void 0, true, {
             fileName: "<stdin>",
-            lineNumber: 120,
+            lineNumber: 123,
             columnNumber: 13
           }, this),
           /* @__PURE__ */ jsxDEV("div", { className: "res", children: [
             /* @__PURE__ */ jsxDEV("img", { src: "icon_gold.png" }, void 0, false, {
               fileName: "<stdin>",
-              lineNumber: 125,
+              lineNumber: 128,
               columnNumber: 15
             }, this),
             /* @__PURE__ */ jsxDEV("span", { children: record?.gold || 0 }, void 0, false, {
               fileName: "<stdin>",
-              lineNumber: 126,
+              lineNumber: 129,
               columnNumber: 15
             }, this)
           ] }, void 0, true, {
             fileName: "<stdin>",
-            lineNumber: 124,
+            lineNumber: 127,
             columnNumber: 13
           }, this)
         ] }, void 0, true, {
           fileName: "<stdin>",
-          lineNumber: 119,
+          lineNumber: 122,
           columnNumber: 11
         }, this)
       ] }, void 0, true, {
         fileName: "<stdin>",
-        lineNumber: 110,
+        lineNumber: 113,
         columnNumber: 9
       }, this),
-      /* @__PURE__ */ jsxDEV("main", { children: [
-        /* @__PURE__ */ jsxDEV("div", { className: "character-stage", children: [
-          /* @__PURE__ */ jsxDEV("img", { src: "alien_char.png", className: "char-sprite floating" }, void 0, false, {
-            fileName: "<stdin>",
-            lineNumber: 134,
-            columnNumber: 13
-          }, this),
-          /* @__PURE__ */ jsxDEV("div", { className: "status-badge", children: [
-            "Status: ",
-            ACTIONS[record?.current_action?.toUpperCase()]?.label || "Unknown"
-          ] }, void 0, true, {
-            fileName: "<stdin>",
-            lineNumber: 135,
-            columnNumber: 13
-          }, this)
-        ] }, void 0, true, {
+      /* @__PURE__ */ jsxDEV("main", { children: /* @__PURE__ */ jsxDEV("div", { className: "character-stage", children: [
+        /* @__PURE__ */ jsxDEV(Character, { action: record?.current_action || "idle" }, void 0, false, {
           fileName: "<stdin>",
-          lineNumber: 133,
-          columnNumber: 11
+          lineNumber: 137,
+          columnNumber: 13
         }, this),
-        /* @__PURE__ */ jsxDEV("div", { className: "action-panel", children: [
-          /* @__PURE__ */ jsxDEV("h3", { children: "Choose Next Task" }, void 0, false, {
-            fileName: "<stdin>",
-            lineNumber: 141,
-            columnNumber: 13
-          }, this),
-          /* @__PURE__ */ jsxDEV("div", { className: "action-grid", children: Object.entries(ACTIONS).map(([key, action]) => /* @__PURE__ */ jsxDEV(
-            "button",
-            {
-              className: `action-btn ${record?.current_action === action.id ? "active" : ""}`,
-              onClick: () => handleActionChange(key),
-              disabled: posting,
-              style: { "--btn-color": action.color },
-              children: [
-                /* @__PURE__ */ jsxDEV("div", { className: "action-label", children: action.label }, void 0, false, {
-                  fileName: "<stdin>",
-                  lineNumber: 151,
-                  columnNumber: 19
-                }, this),
-                /* @__PURE__ */ jsxDEV("div", { className: "action-rate", children: action.desc }, void 0, false, {
-                  fileName: "<stdin>",
-                  lineNumber: 152,
-                  columnNumber: 19
-                }, this)
-              ]
-            },
-            key,
-            true,
-            {
-              fileName: "<stdin>",
-              lineNumber: 144,
-              columnNumber: 17
-            },
-            this
-          )) }, void 0, false, {
-            fileName: "<stdin>",
-            lineNumber: 142,
-            columnNumber: 13
-          }, this)
+        /* @__PURE__ */ jsxDEV("div", { className: "status-badge", children: [
+          "Status: ",
+          ACTIONS[record?.current_action?.toUpperCase()]?.label || "Unknown"
         ] }, void 0, true, {
           fileName: "<stdin>",
-          lineNumber: 140,
-          columnNumber: 11
+          lineNumber: 138,
+          columnNumber: 13
         }, this)
       ] }, void 0, true, {
         fileName: "<stdin>",
-        lineNumber: 132,
+        lineNumber: 136,
+        columnNumber: 11
+      }, this) }, void 0, false, {
+        fileName: "<stdin>",
+        lineNumber: 135,
         columnNumber: 9
       }, this)
     ] }, void 0, true, {
       fileName: "<stdin>",
-      lineNumber: 109,
+      lineNumber: 112,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV("button", { className: "fab", onClick: () => setShowActions(true), children: /* @__PURE__ */ jsxDEV("img", { src: "icon_energy.png", alt: "Actions" }, void 0, false, {
+      fileName: "<stdin>",
+      lineNumber: 147,
+      columnNumber: 9
+    }, this) }, void 0, false, {
+      fileName: "<stdin>",
+      lineNumber: 146,
+      columnNumber: 7
+    }, this),
+    /* @__PURE__ */ jsxDEV(AnimatePresence, { children: showActions && /* @__PURE__ */ jsxDEV(Fragment, { children: [
+      /* @__PURE__ */ jsxDEV(
+        motion.div,
+        {
+          className: "modal-overlay",
+          initial: { opacity: 0 },
+          animate: { opacity: 1 },
+          exit: { opacity: 0 },
+          onClick: () => setShowActions(false),
+          style: { zIndex: 90 }
+        },
+        void 0,
+        false,
+        {
+          fileName: "<stdin>",
+          lineNumber: 154,
+          columnNumber: 13
+        },
+        this
+      ),
+      /* @__PURE__ */ jsxDEV(
+        motion.div,
+        {
+          className: "action-drawer",
+          initial: { y: "100%" },
+          animate: { y: 0 },
+          exit: { y: "100%" },
+          transition: { type: "spring", damping: 25, stiffness: 300 },
+          children: [
+            /* @__PURE__ */ jsxDEV("div", { className: "drawer-header", children: [
+              /* @__PURE__ */ jsxDEV("h3", { children: "Select Protocol" }, void 0, false, {
+                fileName: "<stdin>",
+                lineNumber: 170,
+                columnNumber: 17
+              }, this),
+              /* @__PURE__ */ jsxDEV("button", { className: "close-btn", onClick: () => setShowActions(false), children: "\u2715" }, void 0, false, {
+                fileName: "<stdin>",
+                lineNumber: 171,
+                columnNumber: 17
+              }, this)
+            ] }, void 0, true, {
+              fileName: "<stdin>",
+              lineNumber: 169,
+              columnNumber: 15
+            }, this),
+            /* @__PURE__ */ jsxDEV("div", { className: "action-grid", children: Object.entries(ACTIONS).map(([key, action]) => /* @__PURE__ */ jsxDEV(
+              "button",
+              {
+                className: `action-btn ${record?.current_action === action.id ? "active" : ""}`,
+                onClick: () => handleActionChange(key),
+                disabled: posting,
+                style: { "--btn-color": action.color },
+                children: [
+                  /* @__PURE__ */ jsxDEV("div", { className: "action-label", children: action.label }, void 0, false, {
+                    fileName: "<stdin>",
+                    lineNumber: 182,
+                    columnNumber: 21
+                  }, this),
+                  /* @__PURE__ */ jsxDEV("div", { className: "action-rate", children: action.desc }, void 0, false, {
+                    fileName: "<stdin>",
+                    lineNumber: 183,
+                    columnNumber: 21
+                  }, this)
+                ]
+              },
+              key,
+              true,
+              {
+                fileName: "<stdin>",
+                lineNumber: 175,
+                columnNumber: 19
+              },
+              this
+            )) }, void 0, false, {
+              fileName: "<stdin>",
+              lineNumber: 173,
+              columnNumber: 15
+            }, this)
+          ]
+        },
+        void 0,
+        true,
+        {
+          fileName: "<stdin>",
+          lineNumber: 162,
+          columnNumber: 13
+        },
+        this
+      )
+    ] }, void 0, true, {
+      fileName: "<stdin>",
+      lineNumber: 153,
+      columnNumber: 11
+    }, this) }, void 0, false, {
+      fileName: "<stdin>",
+      lineNumber: 151,
       columnNumber: 7
     }, this),
     /* @__PURE__ */ jsxDEV(AnimatePresence, { children: simulation && simulation.effectiveHours > 0.01 && /* @__PURE__ */ jsxDEV(
@@ -247,7 +311,7 @@ function App() {
         children: /* @__PURE__ */ jsxDEV("div", { className: "modal-content", children: !showReplay ? /* @__PURE__ */ jsxDEV(Fragment, { children: [
           /* @__PURE__ */ jsxDEV("h2", { children: "Mission Report" }, void 0, false, {
             fileName: "<stdin>",
-            lineNumber: 172,
+            lineNumber: 204,
             columnNumber: 19
           }, this),
           /* @__PURE__ */ jsxDEV("p", { children: [
@@ -257,20 +321,20 @@ function App() {
               " hours"
             ] }, void 0, true, {
               fileName: "<stdin>",
-              lineNumber: 173,
+              lineNumber: 205,
               columnNumber: 40
             }, this),
             "."
           ] }, void 0, true, {
             fileName: "<stdin>",
-            lineNumber: 173,
+            lineNumber: 205,
             columnNumber: 19
           }, this),
           /* @__PURE__ */ jsxDEV("div", { className: "rewards-list", children: [
             /* @__PURE__ */ jsxDEV("div", { className: "reward-item", children: [
               /* @__PURE__ */ jsxDEV("img", { src: "icon_gold.png" }, void 0, false, {
                 fileName: "<stdin>",
-                lineNumber: 177,
+                lineNumber: 209,
                 columnNumber: 23
               }, this),
               " +",
@@ -278,7 +342,7 @@ function App() {
               " Gold"
             ] }, void 0, true, {
               fileName: "<stdin>",
-              lineNumber: 176,
+              lineNumber: 208,
               columnNumber: 21
             }, this),
             /* @__PURE__ */ jsxDEV("div", { className: "reward-item", children: [
@@ -287,7 +351,7 @@ function App() {
               " XP"
             ] }, void 0, true, {
               fileName: "<stdin>",
-              lineNumber: 179,
+              lineNumber: 211,
               columnNumber: 21
             }, this),
             simulation.drops.length > 0 && /* @__PURE__ */ jsxDEV("div", { className: "reward-item special", children: [
@@ -296,18 +360,18 @@ function App() {
               " Item(s)!"
             ] }, void 0, true, {
               fileName: "<stdin>",
-              lineNumber: 183,
+              lineNumber: 215,
               columnNumber: 23
             }, this)
           ] }, void 0, true, {
             fileName: "<stdin>",
-            lineNumber: 175,
+            lineNumber: 207,
             columnNumber: 19
           }, this),
           /* @__PURE__ */ jsxDEV("div", { className: "button-group", children: [
             /* @__PURE__ */ jsxDEV("button", { className: "primary-btn", onClick: collectReward, children: "Collect & Continue" }, void 0, false, {
               fileName: "<stdin>",
-              lineNumber: 190,
+              lineNumber: 222,
               columnNumber: 21
             }, this),
             /* @__PURE__ */ jsxDEV("button", { className: "secondary-btn", onClick: () => {
@@ -315,17 +379,17 @@ function App() {
               playSound("levelup");
             }, children: "\u{1F4FA} Watch Replay" }, void 0, false, {
               fileName: "<stdin>",
-              lineNumber: 191,
+              lineNumber: 223,
               columnNumber: 21
             }, this)
           ] }, void 0, true, {
             fileName: "<stdin>",
-            lineNumber: 189,
+            lineNumber: 221,
             columnNumber: 19
           }, this)
         ] }, void 0, true, {
           fileName: "<stdin>",
-          lineNumber: 171,
+          lineNumber: 203,
           columnNumber: 17
         }, this) : /* @__PURE__ */ jsxDEV("div", { className: "replay-container", children: [
           /* @__PURE__ */ jsxDEV(
@@ -356,23 +420,23 @@ function App() {
             false,
             {
               fileName: "<stdin>",
-              lineNumber: 201,
+              lineNumber: 233,
               columnNumber: 19
             },
             this
           ),
           /* @__PURE__ */ jsxDEV("button", { className: "close-replay", onClick: () => setShowReplay(false), children: "Back to Summary" }, void 0, false, {
             fileName: "<stdin>",
-            lineNumber: 223,
+            lineNumber: 255,
             columnNumber: 19
           }, this)
         ] }, void 0, true, {
           fileName: "<stdin>",
-          lineNumber: 200,
+          lineNumber: 232,
           columnNumber: 17
         }, this) }, void 0, false, {
           fileName: "<stdin>",
-          lineNumber: 169,
+          lineNumber: 201,
           columnNumber: 13
         }, this)
       },
@@ -380,13 +444,13 @@ function App() {
       false,
       {
         fileName: "<stdin>",
-        lineNumber: 163,
+        lineNumber: 195,
         columnNumber: 11
       },
       this
     ) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 161,
+      lineNumber: 193,
       columnNumber: 7
     }, this),
     /* @__PURE__ */ jsxDEV("style", { jsx: true, children: `
@@ -464,17 +528,7 @@ function App() {
           justify-content: center;
           align-items: center;
         }
-        .char-sprite {
-          width: 250px;
-          image-rendering: pixelated;
-        }
-        .floating {
-          animation: float 3s ease-in-out infinite;
-        }
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-20px); }
-        }
+
         
         .status-badge {
           margin-top: 20px;
@@ -488,13 +542,28 @@ function App() {
           font-size: 0.8em;
         }
 
-        .action-panel {
-          background: rgba(0,0,0,0.8);
-          border-top: 2px solid #333;
+        /* Action Drawer */
+        .action-drawer {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: #151520;
+          border-top: 2px solid #00ffff;
           padding: 20px;
           border-radius: 20px 20px 0 0;
+          z-index: 95;
+          box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
         }
-        .action-panel h3 { margin: 0 0 15px 0; color: #aaa; font-size: 0.9em; text-transform: uppercase; }
+        .drawer-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+        }
+        .drawer-header h3 { margin: 0; color: #fff; }
+        .close-btn { background: none; border: none; color: #aaa; font-size: 1.5em; cursor: pointer; }
+        
         .action-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -524,6 +593,27 @@ function App() {
         }
         .action-label { font-weight: bold; margin-bottom: 5px; }
         .action-rate { font-size: 0.75em; color: #aaa; }
+        
+        /* Floating Action Button */
+        .fab {
+          position: fixed;
+          bottom: 30px;
+          right: 30px;
+          width: 70px;
+          height: 70px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #00ffff, #0099ff);
+          border: 2px solid #fff;
+          box-shadow: 0 5px 20px rgba(0,255,255,0.4);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          z-index: 50;
+          transition: transform 0.2s;
+        }
+        .fab:active { transform: scale(0.95); }
+        .fab img { width: 40px; height: 40px; }
 
         /* Modal */
         .modal-overlay {
@@ -614,18 +704,18 @@ function App() {
         }
       ` }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 231,
+      lineNumber: 263,
       columnNumber: 7
     }, this)
   ] }, void 0, true, {
     fileName: "<stdin>",
-    lineNumber: 104,
+    lineNumber: 107,
     columnNumber: 5
   }, this);
 }
 const root = createRoot(document.getElementById("app"));
 root.render(/* @__PURE__ */ jsxDEV(App, {}, void 0, false, {
   fileName: "<stdin>",
-  lineNumber: 461,
+  lineNumber: 519,
   columnNumber: 13
 }));
