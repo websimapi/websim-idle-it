@@ -1,7 +1,8 @@
 import { jsxDEV } from "react/jsx-dev-runtime";
 import React from "react";
-import { AbsoluteFill, useVideoConfig, useCurrentFrame, interpolate, Img, Audio, staticFile } from "remotion";
+import { AbsoluteFill, useVideoConfig, useCurrentFrame, interpolate, Img, staticFile } from "remotion";
 const OfflineReplay = ({ simulationData, username }) => {
+  if (!simulationData) return null;
   const { fps, durationInFrames } = useVideoConfig();
   const frame = useCurrentFrame();
   const { goldEarned, effectiveHours, actionName, drops } = simulationData;
@@ -29,12 +30,12 @@ const OfflineReplay = ({ simulationData, username }) => {
       false,
       {
         fileName: "<stdin>",
-        lineNumber: 32,
+        lineNumber: 34,
         columnNumber: 9
       }
     ) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 31,
+      lineNumber: 33,
       columnNumber: 7
     }),
     /* @__PURE__ */ jsxDEV("div", { style: {
@@ -53,7 +54,7 @@ const OfflineReplay = ({ simulationData, username }) => {
       username
     ] }, void 0, true, {
       fileName: "<stdin>",
-      lineNumber: 43,
+      lineNumber: 45,
       columnNumber: 7
     }),
     /* @__PURE__ */ jsxDEV("div", { style: {
@@ -69,7 +70,7 @@ const OfflineReplay = ({ simulationData, username }) => {
       actionName
     ] }, void 0, true, {
       fileName: "<stdin>",
-      lineNumber: 58,
+      lineNumber: 60,
       columnNumber: 7
     }),
     /* @__PURE__ */ jsxDEV(AbsoluteFill, { style: { justifyContent: "center", alignItems: "center" }, children: /* @__PURE__ */ jsxDEV("div", { style: { transform: `translateY(${Math.sin(frame / 10) * 10}px)` }, children: /* @__PURE__ */ jsxDEV(
@@ -82,16 +83,16 @@ const OfflineReplay = ({ simulationData, username }) => {
       false,
       {
         fileName: "<stdin>",
-        lineNumber: 73,
+        lineNumber: 75,
         columnNumber: 12
       }
     ) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 72,
+      lineNumber: 74,
       columnNumber: 9
     }) }, void 0, false, {
       fileName: "<stdin>",
-      lineNumber: 71,
+      lineNumber: 73,
       columnNumber: 7
     }),
     /* @__PURE__ */ jsxDEV(AbsoluteFill, { style: { justifyContent: "center", alignItems: "center", top: -150 }, children: [
@@ -106,7 +107,7 @@ const OfflineReplay = ({ simulationData, username }) => {
         " Gold"
       ] }, void 0, true, {
         fileName: "<stdin>",
-        lineNumber: 82,
+        lineNumber: 84,
         columnNumber: 9
       }),
       /* @__PURE__ */ jsxDEV("div", { style: { fontSize: 30, color: "#aaa" }, children: [
@@ -115,12 +116,12 @@ const OfflineReplay = ({ simulationData, username }) => {
         " hrs"
       ] }, void 0, true, {
         fileName: "<stdin>",
-        lineNumber: 90,
+        lineNumber: 92,
         columnNumber: 9
       })
     ] }, void 0, true, {
       fileName: "<stdin>",
-      lineNumber: 81,
+      lineNumber: 83,
       columnNumber: 7
     }),
     drops.map((drop, i) => {
@@ -144,7 +145,7 @@ const OfflineReplay = ({ simulationData, username }) => {
       }, children: [
         /* @__PURE__ */ jsxDEV(Img, { src: staticFile("card_frame.png"), style: { width: 40, height: 40 } }, void 0, false, {
           fileName: "<stdin>",
-          lineNumber: 118,
+          lineNumber: 120,
           columnNumber: 13
         }),
         /* @__PURE__ */ jsxDEV("span", { style: { color: "#fff" }, children: [
@@ -153,18 +154,18 @@ const OfflineReplay = ({ simulationData, username }) => {
           "!"
         ] }, void 0, true, {
           fileName: "<stdin>",
-          lineNumber: 119,
+          lineNumber: 121,
           columnNumber: 13
         })
       ] }, i, true, {
         fileName: "<stdin>",
-        lineNumber: 103,
+        lineNumber: 105,
         columnNumber: 11
       });
     })
   ] }, void 0, true, {
     fileName: "<stdin>",
-    lineNumber: 29,
+    lineNumber: 31,
     columnNumber: 5
   });
 };
